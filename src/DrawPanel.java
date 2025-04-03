@@ -11,12 +11,17 @@ public class DrawPanel extends JPanel implements MouseListener {
     private long time;
     private ArrayList<Brick> bricks = new ArrayList<Brick>();
     private int num = 0;
+    private int rows;
+    private int cols;
 
     public DrawPanel() {
         this.addMouseListener(this);
-        brickLayout = new BrickLayout("src/Bricks", 40, 30, true);
+        Utils util = new Utils();
+        rows = util.getRows();
+        cols = util.getColumns();
+        brickLayout = new BrickLayout("src/Bricks", cols, rows, true);
         bricks = brickLayout.getBricks();
-        grid = new int[30][40];
+        grid = new int[rows][cols];
         createGrid(0);
         time = System.currentTimeMillis();
     }
@@ -32,8 +37,8 @@ public class DrawPanel extends JPanel implements MouseListener {
         }
         Graphics2D g2 = (Graphics2D)g;
 
-        for (int c = 0; c < 40; c++) {
-            for (int r = 0; r < 30; r++) {
+        for (int c = 0; c < cols; c++) {
+            for (int r = 0; r < rows; r++) {
                 g.drawRect(x, y, 20, 20);
                 if (grid[r][c] == 1) {
                     g2.setColor(Color.RED);
@@ -58,7 +63,7 @@ public class DrawPanel extends JPanel implements MouseListener {
         }
         for(int i = 0; i < amount; i ++){
             Brick brick = bricks.get(i);
-            if(30 - brick.getCurrentHeight() != brick.getHeight()) {
+            if(rows - brick.getCurrentHeight() != brick.getHeight()) {
                 brick.setCurrentHeight(brick.getCurrentHeight() + 1);
             }
             for(int n = 0; n < brick.getEnd() - brick.getStart() + 1; n ++){
